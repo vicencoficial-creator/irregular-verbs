@@ -1015,6 +1015,13 @@ function checkRealtimeCorrection(inputId, correctVal, hintId) {
     if (pOk && ppOk) {
       $('checkBtn').disabled = false;
       check(); // auto-continua
+    } else {
+      // Auto move focus to the other field
+      if (inputId === 'pastInput' && !$('ppInput').readOnly) {
+        $('ppInput').focus();
+      } else if (inputId === 'ppInput' && !$('pastInput').readOnly) {
+        $('pastInput').focus();
+      }
     }
   } else {
     // Si lo borra de nuevo despues de tenerlo bien, vuelve rojo
@@ -1180,14 +1187,15 @@ function onKey(e) {
   
   if (e.key === ' ') e.preventDefault();
 
-  if ($('checkBtn').disabled) return; 
-  
   const pi = $('pastInput'), ppi = $('ppInput');
   
+  // Siempre permitimos saltar de past a pp, independientemente de si el botón está desactivado
   if (e.target === pi && !ppi.readOnly) {
     ppi.focus(); 
     return;
   }
+
+  if ($('checkBtn').disabled) return; 
   
   check();
 }
